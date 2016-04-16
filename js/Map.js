@@ -3,13 +3,15 @@ define([
   'jig/shapes/Quad',
   './tiles/Tile',
   './tiles/Grass',
-  './tiles/Base'
+  './tiles/Base',
+  './enemies/Walker'
 ],
 function(Container,
          Quad,
          Tile,
          Grass,
-         Base) {
+         Base,
+         Walker) {
   var Map = function(width, height) {
     this._super();
     
@@ -25,7 +27,9 @@ function(Container,
         this._map[i][j] = null;
       }
     }
-    
+
+    this.spawn(-4, -4, Walker, 1);
+
     this.putTile(new Base(), 0, 0);
     
     this.interactive = this.buttonMode = true;
@@ -73,6 +77,16 @@ function(Container,
       this.removeChild(tile);
     }
   };
+
+  Map.prototype.spawn = function(x, y, type, amount) {
+
+    for(var i = 0; i < amount; i ++) {
+      var entity = new type(x, y);
+      this.addChild(entity);
+
+    }
+
+  }
   
   return Map;
 });
