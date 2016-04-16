@@ -1,27 +1,17 @@
 define([
   'jig/Container',
-  'jig/Text'
+  './Map'
 ],
 function(Container,
-         Text) {
+         Map) {
   var GameMain = function() {
-    Container.call(this);
+    this._super();
     
-    this.sayHello = new Text("It works!", {font: 'bold 70px monospace', fill: 0xffffff});
-    
-    this.phase = 0;
-    
-    this.addChild(this.sayHello);
+    this.map = new Map(10, 10);
+    this.addChild(this.map);
   };
   
   extend(GameMain, Container);
-  
-  GameMain.prototype.update = function(delta) {
-    this.sayHello.x = Math.cos(this.phase) * 300;
-    this.sayHello.y = Math.sin(this.phase) * 300;
-    
-    this.phase += Math.PI * delta;
-  };
   
   return GameMain;
 });
