@@ -5,7 +5,7 @@ define(["jig/Container", "../tiles/Tile"], function (Container, TILE) {
         this.x = x * TILE.SIZE;
         this.y = y * TILE.SIZE;
 
-        this.speed = 1;
+        this.speed = 10;
         this.health = 100;
 
         this.vx = 0;
@@ -13,18 +13,43 @@ define(["jig/Container", "../tiles/Tile"], function (Container, TILE) {
     }
     extend(Enemy, Container);
 
-    Enemy.prototype.moveTo = function(tile) {
+    Object.defineProperties(Enemy.prototype, {
+
+    });
+
+    Enemy.prototype.getDistanceTo = function(tile) {
         var dx = tile.x - this.x;
         var dy = tile.y - this.y;
 
-        // How whould I implement moveTo?
+        var length = Math.sqrt(dx * dx + dy * dy);
 
-        this.vx = dx;
-        this.vy = dy;
+        return length;
+
+    }
+
+    Enemy.prototype.getDirectionTo = function(tile) {
+        var dx = tile.x - this.x;
+        var dy = tile.y - this.y;
+
+        var length = this.getDistanceTo(tile);
+
+        var x = dx / length;
+        var y = dy / length;
+
+        return {x: x, y:  y};
+
+    }
+
+    Enemy.prototype.moveTo = function(tile) {
+        var direction = this.getDirectionTo(tile);
+
+        this.vx = direction.x;
+        this.vy = direction.y;
+
     }
 
     Enemy.prototype.lookAt = function(tile) {
-
+        
 
     }
 
@@ -37,8 +62,8 @@ define(["jig/Container", "../tiles/Tile"], function (Container, TILE) {
         if(this.dest) {
             this.moveTo(this.dest);
 
-            this.x += this.vx * delta;
-            this.y += this.vy * delta;
+            this.x += this.vx * this.speed * delta;
+            this.y += this.vy * this.speed  * delta;
 
         }
 
