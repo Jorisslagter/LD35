@@ -14,12 +14,13 @@ function(Container,
          Walker) {
   var Map = function(width, height) {
     this._super();
-    
     this.minTileX = -width/2;
     this.maxTileX = width/2;
     this.minTileY = -height/2;
     this.maxTileY = height/2;
-    
+  
+    this.entities = [];
+
     var background = new Quad(0x222222, width * Tile.SIZE, height * Tile.SIZE);
     this.addChild(background);
     
@@ -33,10 +34,15 @@ function(Container,
       }
     }
 
-    this.spawn(-4, -4, Walker, 1);
-
     this.putTile(new Base(), 0, 0);
-    
+
+    // Spawning some enemy Walkers
+    for(var k = 0; k < 10; k ++) {
+      var randomX = Math.random() * 20 + -10;
+      var randomY = Math.random() * 20 + -10;
+      this.spawn(randomX, randomY, Walker);
+    }
+
     this.interactive = this.buttonMode = true;
   };
   
@@ -85,13 +91,27 @@ function(Container,
     }
   };
 
-  Map.prototype.spawn = function(x, y, type, amount) {
+  Map.prototype.getTileAt = function(cellX, cellY) {
+    var tile = this._map[cellX][cellY];
 
-    for(var i = 0; i < amount; i ++) {
+    if(!tile) {
+      return null;
+    }
+
+    return this._map[cellX][cellY];
+
+  }
+
+  Map.prototype.spawn = function(x, y, type) {
+
       var entity = new type(x, y);
+
+      var target = this.getTileAt(0,0);
+      entity.setGoal(target);
+
+      this.entities.push(entity);
       this.addChild(entity);
 
-    }
 
   }
   
