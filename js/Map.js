@@ -14,7 +14,9 @@ function(Container,
          Walker) {
   var Map = function(width, height) {
     this._super();
-    
+
+    this.entities = [];
+
     var background = new Quad(0x222222, width * Tile.SIZE, height * Tile.SIZE);
     this.addChild(background);
     
@@ -28,10 +30,10 @@ function(Container,
       }
     }
 
+    this.putTile(new Base(), 0, 0);
+
     this.spawn(-4, -4, Walker, 1);
 
-    this.putTile(new Base(), 0, 0);
-    
     this.interactive = this.buttonMode = true;
   };
   
@@ -78,10 +80,29 @@ function(Container,
     }
   };
 
+  Map.prototype.getTileAt = function(cellX, cellY) {
+    var tile = this._map[cellX][cellY];
+    
+    if(!tile) {
+      return null;
+    }
+
+    return this._map[cellX][cellY];
+
+  }
+
   Map.prototype.spawn = function(x, y, type, amount) {
 
     for(var i = 0; i < amount; i ++) {
       var entity = new type(x, y);
+
+      var target = this.getTileAt(0,0);
+
+      console.log(target);
+
+      entity.moveTo(target);
+
+      this.entities.push(entity);
       this.addChild(entity);
 
     }
