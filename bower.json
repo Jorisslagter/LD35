@@ -1,0 +1,19 @@
+{
+  "name": "jig-game",
+  "description": "A game generated with jig",
+  "main": "index.html",
+  "authors": [
+    "Miriti and DrMicra"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/miriti/jig",
+  "moduleType": [
+    "amd"
+  ],
+  "private": true,
+  "dependencies": {
+    "jig": "/Users/joris/PhpstormProjects/JIG/jig3/",
+    "requirejs": "^2.2.0",
+    "pixi.js": "^3.0.10"
+  }
+}

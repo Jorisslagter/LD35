@@ -1,0 +1,11 @@
+{
+  "name": "jig-game",
+  "description": "A game generated with jig",
+  "dependencies": {
+    "gulp": "^3.9.0",
+    "gulp-file": "^0.2.0",
+    "gulp-watch": "^4.3.5",
+    "gulp-webserver": "^0.9.1",
+    "js-beautify": "^1.6.2"
+  }
+}

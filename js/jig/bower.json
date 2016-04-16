@@ -1,0 +1,21 @@
+{
+  "name": "js-game-framework",
+  "homepage": "https://github.com/miriti/jig",
+  "authors": [
+    "Michael Miriti <michael@miriti.ru>"
+  ],
+  "description": "javascript framework for games",
+  "main": "init",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "js"
+  ],
+  "ignore": [],
+  "license": "MIT",
+  "dependencies": {
+    "pixi.js": "~3.0.10",
+    "requirejs": "^2.2.0"
+  }
+}
