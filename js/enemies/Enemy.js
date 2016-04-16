@@ -5,7 +5,7 @@ define(["jig/Container", "../tiles/Tile"], function (Container, TILE) {
         this.x = x * TILE.SIZE;
         this.y = y * TILE.SIZE;
 
-        this.speed = 10;
+        this.speed = 20;
         this.health = 100;
 
         this.vx = 0;
@@ -49,7 +49,10 @@ define(["jig/Container", "../tiles/Tile"], function (Container, TILE) {
     }
 
     Enemy.prototype.lookAt = function(tile) {
-        
+        var direction = this.getDirectionTo(tile);
+
+        var rotation = Math.atan2(direction.y, direction.x);
+        this.rotation = rotation;
 
     }
 
@@ -57,10 +60,16 @@ define(["jig/Container", "../tiles/Tile"], function (Container, TILE) {
         this.dest = dest;
     }
 
+
     Enemy.prototype.update = function (delta) {
+        if(this.getDistanceTo(this.dest) <= 1) {
+            this.dest.hit(1);
+            this.ruin();
+        }
 
         if(this.dest) {
             this.moveTo(this.dest);
+            this.lookAt(this.dest);
 
             this.x += this.vx * this.speed * delta;
             this.y += this.vy * this.speed  * delta;
