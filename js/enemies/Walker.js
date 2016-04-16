@@ -9,15 +9,15 @@ define([
     Quad,
     Vector
 ) {
-    var Walker = function (x, y) {
-        this._super([x, y]);
+    var Walker = function (container, x, y) {
+        this._super([container, x, y]);
 
         var body = new Quad(0xff2222, 25, 25);
         this.addChild(body);
 
         this.rangeOfFire = 300;
 
-        this.equipWeapon(new Pistol());
+        this.equipWeapon(new Pistol(this.container));
         this.weapon.position = new Vector(15, 0);
     }
     extend(Walker, Enemy);

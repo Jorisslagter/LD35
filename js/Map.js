@@ -110,7 +110,7 @@ function(Container,
 
   Map.prototype.spawn = function(x, y, type) {
 
-      var entity = new type(x, y);
+      var entity = new type(this, x, y);
 
       var target = this.getTileAt(0,0);
       entity.setGoal(target);
