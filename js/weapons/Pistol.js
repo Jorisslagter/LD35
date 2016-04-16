@@ -1,6 +1,6 @@
 define(["./Weapon", "../projectiles/Bullet", "jig/shapes/Quad"], function (Weapon, Bullet, Quad) {
-    var Pistol = function () {
-        this._super();
+    var Pistol = function (container) {
+        this._super([container]);
         // Graphics
 
         this.setProjectile(Bullet);

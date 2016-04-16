@@ -1,11 +1,12 @@
 define(["jig/Container", "jig/Vector"], function (Container, Vector) {
-    var Weapon = function() {
+    var Weapon = function(projectileContainer) {
         Container.call(this);
 
         this.projectile = null;
         this.cooldownTimer = this.cooldown = 1;
         this.ROF = 1;
         this.readyToShoot = false;
+        this.projectileContainer = projectileContainer;
 
         this.projectiles = [];
 
@@ -32,8 +33,12 @@ define(["jig/Container", "jig/Vector"], function (Container, Vector) {
     }
 
     Weapon.prototype.createProjectile = function(dest, container) {
-        var position = new Vector(this.x, this.y);
-        var Projectile = new this.projectile(position, dest);
+        var position = new Vector(this.parent.x, this.parent.y);
+        var Projectile = new this.projectile(this, position, dest);
+
+        if(!container) {
+            container = this.projectileContainer;
+        }
 
         //container.addChild(Projectile);
 
@@ -44,7 +49,9 @@ define(["jig/Container", "jig/Vector"], function (Container, Vector) {
     Weapon.prototype.destroyProjectile = function(projectile) {
         var index = this.projectiles.indexOf(projectile);
 
-        this.removeChild(projectile);
+        container = this.projectileContainer;
+        container.removeChild(projectile);
+
         this.projectiles.slice(index, 1);
 
     }

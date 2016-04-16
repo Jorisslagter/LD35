@@ -7,7 +7,7 @@ define([
         Vector,
         Tile
     ) {
-    var Enemy = function (x, y) {
+    var Enemy = function (container, x, y) {
         Container.call(this);
 
         this.x = x * Tile.SIZE;
@@ -19,6 +19,7 @@ define([
         this.vx = 0;
         this.vy = 0;
 
+        this.container = container;
         // this.rangeOfFire = 100;
 
         this.weapon = null;
@@ -105,7 +106,7 @@ define([
 
     Enemy.prototype.shoot = function() {
         this.weapon.shoot(this.dest);
-        
+
     }
 
 
