@@ -11,12 +11,6 @@ define(["./Weapon", "../projectiles/Bullet", "jig/shapes/Quad"], function (Weapo
     }
     extend(Pistol, Weapon);
 
-    // Pistol.prototype.update = function (delta) {
-    //
-    // }
-
-
-
     return Pistol;
 
 });
