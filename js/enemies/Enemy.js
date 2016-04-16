@@ -83,6 +83,8 @@ define([
     }
 
     Enemy.prototype.ruin = function() {
+        this.health = 0;
+        
         this.parent.removeChild(this);
 
     }

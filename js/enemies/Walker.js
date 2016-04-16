@@ -16,6 +16,7 @@ define([
         this.addChild(body);
 
         this.rangeOfFire = 300;
+        this.speed = 100;
 
         this.equipWeapon(new Pistol(this.container));
         this.weapon.position = new Vector(15, 0);
