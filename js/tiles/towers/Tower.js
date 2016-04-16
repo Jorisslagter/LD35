@@ -1,25 +1,34 @@
 define([
+  'jig/Container',
   'jig/shapes/Circle',
   'jig/shapes/Quad',
   'jig/Vector',
   'jig/components/Schedule',
-  '../Tile'
+  '../Tile',
+  '../Building'
 ],
-function(Circle,
+function(Container,
+         Circle,
          Quad,
          Vector,
          Schedule,
-         Tile) {
+         Tile,
+         Building) {
   var Tower = function() {
     this._super([], [Schedule]);
     
     this.build({
-      body: {
-        is: new Circle(0xff8800, (Tile.SIZE/2)*0.9)
-      },
-      gun: {
-        is: new Quad(0xff0000, Tile.SIZE/2, 10),
-        x: -Tile.SIZE/4+5
+      tower: {
+        is: new Container(),
+        build: {
+          body: {
+            is: new Circle(0xff8800, (Tile.SIZE/2)*0.9)
+          },
+          gun: {
+            is: new Quad(0xff0000, Tile.SIZE/2, 10),
+            x: -Tile.SIZE/4+5
+          }
+        }
       }
     });
     
@@ -27,9 +36,11 @@ function(Circle,
     this.target = null;
     this.name = "Basic Tower";
     this.price = 100;
+    
+    this.health = this.maxHealth = 100;
   };
   
-  extend(Tower, Tile);
+  extend(Tower, Building);
   
   Tower.prototype.locateTarget = function() {
     for(var i in this.map.entities) {
@@ -55,7 +66,7 @@ function(Circle,
       if(this.target) {
         var v = new Vector(this.x - this.target.x, this.y - this.target.y);
         
-        this.rotation = v.atan2();
+        this.tower.rotation = v.atan2();
         
         if(v.length() > this.distance) {
           this.target = null;

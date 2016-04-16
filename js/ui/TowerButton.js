@@ -13,6 +13,7 @@ function(Container,
     var buttonContent = new Container();
     
     var tile = new Tile();
+    tile.showHealthBar = false;
     
     buttonContent.build({
       back: {

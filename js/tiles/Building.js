@@ -7,7 +7,7 @@ function(Tile,
   var Building = function() {
     Tile.call(this);
     
-    this.health = this.maxHealth = 100;
+    this._showHealthBar = true;
   };
   
   extend(Building, Tile);
@@ -21,8 +21,8 @@ function(Tile,
           this.removeChild(this.healthBar);
         }
         
-        this.healthBar = new HealthBar(200, 20, this._maxHealth);
-        this.healthBar.y = -100;
+        this.healthBar = new HealthBar(this.width * 1.2, 20, this._maxHealth);
+        this.healthBar.y = -this.height/2 - 20;
         this.addChild(this.healthBar);
       },
       get: function() {
@@ -32,10 +32,25 @@ function(Tile,
     health: {
       set: function(value) {
         this._health = Math.min(value, this.maxHealth);
-        this.healthBar.value = this._health;
+        
+        if(this.healthBar) {
+          this.healthBar.value = this._health;
+        }
       },
       get: function() {
         return this._health || 0;
+      }
+    },
+    showHealthBar: {
+      set: function(value) {
+        this._showHealthBar = value;
+        
+        if(this.healthBar) {
+          this.healthBar.visible = this._showHealthBar;
+        }
+      },
+      get: function() {
+        return this._showHealthBar;
       }
     }
   });
