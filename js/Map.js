@@ -4,14 +4,16 @@ define([
   './tiles/Tile',
   './tiles/Grass',
   './tiles/Base',
-  './enemies/Walker'
+  './enemies/Walker',
+  './ui/BuildForbidden'
 ],
 function(Container,
          Quad,
          Tile,
          Grass,
          Base,
-         Walker) {
+         Walker,
+         BuildForbidden) {
   var Map = function(width, height) {
     this._super();
     this.minTileX = -width/2;
@@ -45,10 +47,32 @@ function(Container,
 
     this.interactive = this.buttonMode = true;
     
-    this.currentTool = null;
+    this._currentTool = null;
+    
+    this._buildForbidden = new BuildForbidden();
   };
   
   extend(Map, Container);
+  
+  Object.defineProperties(Map.prototype, {
+    currentTool: {
+      set: function(value) {
+        if(this._currentTool && this._currentTool.preview) {
+          this.removeChild(this._currentTool.preview);
+        }
+        
+        this._currentTool = value;
+        
+        if(this._currentTool && this._currentTool.preview) {
+          this._currentTool.preview.visible = false;
+          this.addChild(this._currentTool.preview);
+        }
+      },
+      get: function() {
+        return this._currentTool;
+      }
+    }
+  })
   
   Map.prototype.getTileCoord = function(point) {
     return {
@@ -62,8 +86,22 @@ function(Container,
     var tile = this.getTileCoord(point);
     
     if((tile.x > this.minTileX) && (tile.x < this.maxTileX) && (tile.y > this.minTileY) && (tile.y < this.maxTileY)) {
-      if(this._map[tile.x][tile.y]) {
-        this._map[tile.x][tile.y].highlight();
+      
+      if(this.currentTool && this.currentTool.preview) {
+        this.currentTool.preview.position.set(tile.x * Tile.SIZE, tile.y * Tile.SIZE);
+        
+        if(!(this.currentTool.preview.visible = (this._map[tile.x][tile.y] == null))) {
+          this._buildForbidden.position.set(tile.x * Tile.SIZE, tile.y * Tile.SIZE);
+          this.addChild(this._buildForbidden);
+        }else{
+          this.removeChild(this._buildForbidden);
+        }
+      } else {
+        this.removeChild(this._buildForbidden);
+        
+        if(this._map[tile.x][tile.y]) {
+          this._map[tile.x][tile.y].highlight();
+        }
       }
     }
   }

@@ -35,7 +35,7 @@ define(["jig/Container", "jig/Vector"], function (Container, Vector) {
         var position = new Vector(this.x, this.y);
         var Projectile = new this.projectile(position, dest);
 
-        container.addChild(Projectile);
+        //container.addChild(Projectile);
 
         this.projectiles.push(Projectile);
 

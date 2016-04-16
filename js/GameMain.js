@@ -26,5 +26,11 @@ function(Container,
   
   extend(GameMain, Container);
   
+  GameMain.prototype.keyDown = function(code) {
+    if(code == 27) {
+      this.map.currentTool = null;
+    }
+  }
+  
   return GameMain;
 });

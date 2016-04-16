@@ -5,7 +5,8 @@ define([
   'jig/Vector',
   'jig/components/Schedule',
   '../Tile',
-  '../Building'
+  '../Building',
+  '../../weapons/Pistol'
 ],
 function(Container,
          Circle,
@@ -13,11 +14,20 @@ function(Container,
          Vector,
          Schedule,
          Tile,
-         Building) {
+         Building,
+         Pistol) {
   var Tower = function() {
     this._super([], [Schedule]);
     
+    this.distance = 300;
+    
     this.build({
+      distanceField: {
+        is: new Circle(0x00ff00, this.distance),
+        alpha: 0.2,
+        interactive: false,
+        visible: false
+      },
       tower: {
         is: new Container(),
         build: {
@@ -32,7 +42,7 @@ function(Container,
       }
     });
     
-    this.distance = 300;
+    
     this.target = null;
     this.name = "Basic Tower";
     this.price = 100;
