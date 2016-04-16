@@ -1,7 +1,15 @@
 define([
-  './Tool'
+  './Tool',
+  '../tiles/towers/CircleTower',
+  '../tiles/towers/SquareTower',
+  '../tiles/towers/TriangleTower'
 ],
-function(Tool) {
+function(Tool, CircleTower, SquareTower, TriangleTower) {
+  
+  CircleTower.prototype.next = SquareTower;
+  SquareTower.prototype.next = TriangleTower;
+  TriangleTower.prototype.next = CircleTower;
+  
   var Build = function(Tile) {
     Tool.call(this);
     
@@ -16,7 +24,9 @@ function(Tool) {
   
   Build.prototype.use = function(map, point) {
     if(map.getTileAt(point.x, point.y) == null) {
-      map.putTile(new this._Tile(), point.x, point.y);
+      var tile = new this._Tile();
+      
+      map.putTile(tile, point.x, point.y);
     }
   };
   

@@ -7,6 +7,8 @@ function(Container) {
     this.interactive = this.buttonMode = true;
     this.map = null;
     this.solid = false;
+    
+    this.cell = {x:0,y:0};
   };
   
   Tile.SIZE = 100;
