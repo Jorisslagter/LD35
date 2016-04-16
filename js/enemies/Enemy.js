@@ -28,9 +28,19 @@ define(["jig/Container", "../tiles/Tile"], function (Container, TILE) {
 
     }
 
+    Enemy.prototype.setGoal = function(dest) {
+        this.dest = dest;
+    }
+
     Enemy.prototype.update = function (delta) {
-        this.x += this.vx * delta;
-        this.y += this.vy * delta;
+
+        if(this.dest) {
+            this.moveTo(this.dest);
+
+            this.x += this.vx * delta;
+            this.y += this.vy * delta;
+
+        }
 
     }
 

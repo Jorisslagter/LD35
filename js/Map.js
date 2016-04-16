@@ -32,7 +32,12 @@ function(Container,
 
     this.putTile(new Base(), 0, 0);
 
-    this.spawn(-4, -4, Walker, 1);
+    // Spawning some enemy Walkers
+    for(var k = 0; k < 10; k ++) {
+      var randomX = Math.random() * 20 + -10;
+      var randomY = Math.random() * 20 + -10;
+      this.spawn(randomX, randomY, Walker);
+    }
 
     this.interactive = this.buttonMode = true;
   };
@@ -82,7 +87,7 @@ function(Container,
 
   Map.prototype.getTileAt = function(cellX, cellY) {
     var tile = this._map[cellX][cellY];
-    
+
     if(!tile) {
       return null;
     }
@@ -91,21 +96,16 @@ function(Container,
 
   }
 
-  Map.prototype.spawn = function(x, y, type, amount) {
+  Map.prototype.spawn = function(x, y, type) {
 
-    for(var i = 0; i < amount; i ++) {
       var entity = new type(x, y);
 
       var target = this.getTileAt(0,0);
-
-      console.log(target);
-
-      entity.moveTo(target);
+      entity.setGoal(target);
 
       this.entities.push(entity);
       this.addChild(entity);
 
-    }
 
   }
   
