@@ -1,47 +1,34 @@
-define(["jig/Container", "../tiles/Tile"], function (Container, TILE) {
+define([
+    "jig/Container",
+    "jig/Vector",
+    "../tiles/Tile"],
+    function (
+        Container,
+        Vector,
+        Tile
+    ) {
     var Enemy = function (x, y) {
         Container.call(this);
 
-        this.x = x * TILE.SIZE;
-        this.y = y * TILE.SIZE;
+        this.x = x * Tile.SIZE;
+        this.y = y * Tile.SIZE;
 
         this.speed = 20;
         this.health = 100;
 
         this.vx = 0;
         this.vy = 0;
+
+        // this.rangeOfFire = 100;
+
+        this.weapon = null;
     }
     extend(Enemy, Container);
 
-    Object.defineProperties(Enemy.prototype, {
-
-    });
-
-    Enemy.prototype.getDistanceTo = function(tile) {
-        var dx = tile.x - this.x;
-        var dy = tile.y - this.y;
-
-        var length = Math.sqrt(dx * dx + dy * dy);
-
-        return length;
-
-    }
-
-    Enemy.prototype.getDirectionTo = function(tile) {
-        var dx = tile.x - this.x;
-        var dy = tile.y - this.y;
-
-        var length = this.getDistanceTo(tile);
-
-        var x = dx / length;
-        var y = dy / length;
-
-        return {x: x, y:  y};
-
-    }
-
     Enemy.prototype.moveTo = function(tile) {
-        var direction = this.getDirectionTo(tile);
+        var position = new Vector(this.x, this.y);
+
+        var direction = position.getDirectionTo(tile);
 
         this.vx = direction.x;
         this.vy = direction.y;
@@ -49,9 +36,9 @@ define(["jig/Container", "../tiles/Tile"], function (Container, TILE) {
     }
 
     Enemy.prototype.lookAt = function(tile) {
-        var direction = this.getDirectionTo(tile);
+        var position = new Vector(this.x, this.y);
 
-        var rotation = Math.atan2(direction.y, direction.x);
+        var rotation = position.getAngleTo(tile);
         this.rotation = rotation;
 
     }
@@ -62,7 +49,10 @@ define(["jig/Container", "../tiles/Tile"], function (Container, TILE) {
 
 
     Enemy.prototype.update = function (delta) {
-        if(this.getDistanceTo(this.dest) <= 1) {
+
+        var position = new Vector(this.x, this.y);
+
+        if(position.getDistanceTo(this.dest) <= 1) {
             this.dest.hit(1);
             this.ruin();
         }
@@ -74,6 +64,10 @@ define(["jig/Container", "../tiles/Tile"], function (Container, TILE) {
             this.x += this.vx * this.speed * delta;
             this.y += this.vy * this.speed  * delta;
 
+        }
+
+        if(this.canShoot()) {
+            this.shoot();
         }
 
     }
@@ -91,6 +85,29 @@ define(["jig/Container", "../tiles/Tile"], function (Container, TILE) {
         this.parent.removeChild(this);
 
     }
+
+    Enemy.prototype.equipWeapon = function(weapon) {
+        this.weapon = weapon;
+
+        this.addChild(weapon);
+    }
+
+    Enemy.prototype.canShoot = function() {
+        var position = new Vector(this.x, this.y);
+        if(position.getDistanceTo(this.dest) <= this.rangeOfFire &&
+            this.weapon.readyToShoot) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    Enemy.prototype.shoot = function() {
+        this.weapon.shoot(this.dest);
+        
+    }
+
 
     return Enemy;
 
