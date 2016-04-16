@@ -6,9 +6,8 @@ define(["jig/Container", "jig/Vector"], function (Container, Vector) {
         this.x = start.x;
         this.y = start.y;
 
-        var direction = start.getDirectionTo(dest);
-        this.dx = direction.x;
-        this.dy = direction.y;
+        this.dx = 1;
+        this.dy = 0;
 
         this.dest = dest;
 
@@ -31,10 +30,10 @@ define(["jig/Container", "jig/Vector"], function (Container, Vector) {
         this.y += this.dy * this.speed * delta;
 
         var position = new Vector(this.x, this.y);
-        if(position.getDistanceTo(this.dest) <= 0) {
-            this.ruin();
-
+        var distance = position.getDistanceTo(this.dest);
+        if(distance <= this.blastRadius / 2 + this.dest.width / 2 ) {
             this.dest.hit(this.damage);
+            this.ruin();
 
             if(this.blastRadius) {
                 // Do some checks
