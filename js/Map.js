@@ -79,6 +79,7 @@ function(Container,
     }
     this._map[cellX][cellY] = tile;
     tile.position.set(cellX * Tile.SIZE, cellY * Tile.SIZE);
+    tile.map = this;
     this.addChild(tile);
   };
   
@@ -88,6 +89,7 @@ function(Container,
     if(tile) {
       this._map[cellX][cellY] = null;
       this.removeChild(tile);
+      tile.map = null;
     }
   };
 

@@ -5,7 +5,7 @@ function(Container) {
   var Tile = function() {
     Container.call(this);
     this.interactive = this.buttonMode = true;
-    
+    this.map = null;
     this.solid = false;
   };
   
