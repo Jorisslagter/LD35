@@ -44,6 +44,8 @@ function(Container,
     }
 
     this.interactive = this.buttonMode = true;
+    
+    this.currentTool = null;
   };
   
   extend(Map, Container);
@@ -70,7 +72,9 @@ function(Container,
     var point = event.data.getLocalPosition(this, event.data.global);
     var tile = this.getTileCoord(point);
     
-    this.putTile(new Grass(), tile.x, tile.y);
+    if(this.currentTool) {
+      this.currentTool.use(this, tile);
+    }
   };
   
   Map.prototype.putTile = function(tile, cellX, cellY) {
