@@ -4,7 +4,7 @@ define(["./Weapon", "../projectiles/Rocket", "jig/shapes/Quad"], function (Weapo
         // Graphics
 
         this.setProjectile(Rocket);
-        this.setCooldown(1);
+        this.setCooldown(5);
 
         var gun = new Quad(0xFFFF22, 30, 10);
         this.addChild(gun);

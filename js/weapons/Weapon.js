@@ -39,8 +39,7 @@ define(["jig/Container", "jig/Vector"], function (Container, Vector) {
         if(!container) {
             container = this.projectileContainer;
         }
-
-        //container.addChild(Projectile);
+        container.addChild(Projectile);
 
         this.projectiles.push(Projectile);
 

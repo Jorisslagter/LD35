@@ -53,7 +53,7 @@ define([
 
         var position = new Vector(this.x, this.y);
 
-        if(position.getDistanceTo(this.dest) <= 1) {
+        if(position.getDistanceTo(this.dest) <= (this.width / 2  + this.dest.width / 2)) {
             this.dest.hit(1);
             this.ruin();
         }
@@ -76,6 +76,8 @@ define([
     Enemy.prototype.hit = function(hp) {
         this.health -= hp;
 
+        console.log(hp +" hit");
+
         if(this.health <= 0) {
             this.ruin();
         }
@@ -84,7 +86,7 @@ define([
 
     Enemy.prototype.ruin = function() {
         this.health = 0;
-        
+
         this.parent.removeChild(this);
 
     }
@@ -108,6 +110,7 @@ define([
 
     Enemy.prototype.shoot = function() {
         this.weapon.shoot(this.dest);
+
 
     }
 

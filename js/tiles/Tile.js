@@ -9,6 +9,7 @@ function(Container) {
     this.solid = false;
     
     this.cell = {x:0,y:0};
+
   };
   
   Tile.SIZE = 100;

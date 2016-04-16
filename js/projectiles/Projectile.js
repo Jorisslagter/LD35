@@ -48,7 +48,7 @@ define(["jig/Container", "jig/Vector"], function (Container, Vector) {
 
             var position = new Vector(this.x, this.y);
             var distance = position.getDistanceTo(this.dest);
-            if(distance <= this.blastRadius / 2 + this.dest.width / 2 ) {
+            if(distance <= (this.blastRadius / 2 + this.dest.width / 2)) {
                 this.dest.hit(this.damage);
                 this.ruin();
 
@@ -71,8 +71,15 @@ define(["jig/Container", "jig/Vector"], function (Container, Vector) {
     Projectile.prototype.ruin = function() {
         // Play sound
         this.weapon.destroyProjectile(this);
+        this.onHit.call(this, this.dest);
 
     }
+
+    Projectile.prototype.onHit = function(collision) {
+
+
+    }
+
 
     return Projectile;
 });
