@@ -31,13 +31,21 @@ define(["jig/Container", "jig/Vector"], function (Container, Vector) {
         this.createProjectile(dest);
     }
 
-    Weapon.prototype.createProjectile = function(dest) {
+    Weapon.prototype.createProjectile = function(dest, container) {
         var position = new Vector(this.x, this.y);
         var Projectile = new this.projectile(position, dest);
 
-        this.addChild(Projectile);
+        container.addChild(Projectile);
 
         this.projectiles.push(Projectile);
+
+    }
+
+    Weapon.prototype.destroyProjectile = function(projectile) {
+        var index = this.projectiles.indexOf(projectile);
+
+        this.removeChild(projectile);
+        this.projectiles.slice(index, 1);
 
     }
 
@@ -48,8 +56,6 @@ define(["jig/Container", "jig/Vector"], function (Container, Vector) {
             this.cooldownTimer -= delta;
         }
     }
-
-    
 
     return Weapon;
 
