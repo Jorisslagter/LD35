@@ -17,32 +17,15 @@ function(Container,
          Building,
          Pistol) {
   var Tower = function() {
-    this._super([], [Schedule]);
-    
-    this.distance = 300;
+    Building.call(this);
     
     this.build({
-      distanceField: {
-        is: new Circle(0x00ff00, this.distance),
-        alpha: 0.2,
-        interactive: false,
-        visible: false
-      },
-      tower: {
-        is: new Container(),
-        build: {
-          body: {
-            is: new Circle(0xff8800, (Tile.SIZE/2)*0.9)
-          },
-          gun: {
-            is: new Quad(0xff0000, Tile.SIZE/2, 10),
-            x: -Tile.SIZE/4+5
-          }
-        }
+      bgLayer: {
+        is: new Container()
       }
     });
     
-    
+    this.distance = 100;
     this.target = null;
     this.name = "Basic Tower";
     this.price = 100;
@@ -52,6 +35,30 @@ function(Container,
   
   extend(Tower, Building);
   
+  Object.defineProperties(Tower.prototype, {
+    distance: {
+      set: function(value) {
+        this._distance = value;
+        
+        if(this.distanceField) {
+          this.bgLayer.removeChild(this.distanceField);
+        }
+        
+        this.distanceField = new Circle(0x00ff00, this._distance);
+        this.distanceField.alpha = 0.2;
+        this.distanceField.interactive = false;
+        this.distanceField.visible = false;
+        
+        this.bgLayer.addChild(this.distanceField);
+      },
+      get: function() {
+        return this._distance;
+      }
+    }
+  });
+  
+  Tower.prototype.next = null;
+  
   Tower.prototype.locateTarget = function() {
     for(var i in this.map.entities) {
       var entity = this.map.entities[i];
@@ -60,8 +67,6 @@ function(Container,
 
       if(length < this.distance) {
         this.target = entity;
-        
-        this._attackTask = this.every(0.5, this.attack);
         return;
       }
     }
@@ -76,15 +81,18 @@ function(Container,
       if(this.target) {
         var v = new Vector(this.x - this.target.x, this.y - this.target.y);
         
-        this.tower.rotation = v.atan2();
-        
         if(v.length() > this.distance) {
           this.target = null;
-          this.killTask(this._attackTask);
         }
       } else {
         this.locateTarget();
       }
+    }
+  };
+  
+  Tower.prototype.shift = function() {
+    if ((this.map) && (this.next)) {
+      this.map.putTile(new this.next(), this.cell.x, this.cell.y, true);
     }
   };
   

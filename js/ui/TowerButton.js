@@ -10,35 +10,47 @@ function(Container,
          Button) {
            
   var TowerButton = function(Tile) {
-    var buttonContent = new Container();
     
-    var tile = new Tile();
-    tile.showHealthBar = false;
+    var genContent = function(hl) {
+      var buttonContent = new Container();
+      
+      var tile = new Tile();
+      tile.showHealthBar = false;
+      
+      buttonContent.build({
+        back: {
+          is: new Quad(0x888888, 220, 220),
+          y: 30,
+          alpha: hl ? 0.8 : 0.6
+        },
+        image: {
+          is: tile,
+          interactive: false
+        },
+        name: {
+          is: new Text(tile.name, {font: "26px monospace", fill: 0xffffff}),
+          y: 80
+        },
+        price: {
+          is: new Text('$' + tile.price, {font: "bold 20px monospace", fill: 0xeeeeee}),
+          y: 110
+        }
+      });
+      
+      return buttonContent;
+    }
     
-    buttonContent.build({
-      back: {
-        is: new Quad(0x888888, 140, 200),
-        y: 30,
-        alpha: 0.6
-      },
-      image: {
-        is: tile,
-        interactive: false
-      },
-      name: {
-        is: new Text(tile.name, {font: "bold 30px monospace", fill: 0xffffff}),
-        y: 80
-      },
-      price: {
-        is: new Text('$' + tile.price, {font: "bold 20px monospace", fill: 0xeeeeee}),
-        y: 110
-      }
-    });
-    
-    this._super([buttonContent]);
+    this._super([genContent(), genContent(true)]);
   };
   
   extend(TowerButton, Button);
+  
+  Object.defineProperties(TowerButton.prototype, {
+    selected: {
+      set: function(value) {},
+      get: function() {}
+    }
+  })
   
   return TowerButton;
 });

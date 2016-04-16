@@ -115,13 +115,15 @@ function(Container,
     }
   };
   
-  Map.prototype.putTile = function(tile, cellX, cellY) {
-    if(this._map[cellX][cellY] !== null) {
+  Map.prototype.putTile = function(tile, cellX, cellY, replace) {
+    if((this._map[cellX][cellY] !== null) && (replace)) {
       this.removeTile(cellX, cellY);
     }
     this._map[cellX][cellY] = tile;
     tile.position.set(cellX * Tile.SIZE, cellY * Tile.SIZE);
     tile.map = this;
+    tile.cell.x = cellX;
+    tile.cell.y = cellY;
     this.addChild(tile);
   };
   
@@ -157,6 +159,22 @@ function(Container,
       this.addChild(entity);
 
 
+  }
+  
+  Map.prototype.queryTiles = function(filterFunc) {
+    var result = [];
+    
+    filterFunc = filterFunc || function() { return true; };
+    
+    for(var x in this._map) {
+      for(var y in this._map[x]) {
+        if((this._map[x][y] != null) && (filterFunc) && (filterFunc(this._map[x][y]))) {
+          result.push(this._map[x][y]);
+        }
+      }
+    }
+    
+    return result;
   }
   
   return Map;
