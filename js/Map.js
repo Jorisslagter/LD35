@@ -15,6 +15,11 @@ function(Container,
   var Map = function(width, height) {
     this._super();
     
+    this.minTileX = -width/2;
+    this.maxTileX = width/2;
+    this.minTileY = -height/2;
+    this.maxTileY = height/2;
+    
     var background = new Quad(0x222222, width * Tile.SIZE, height * Tile.SIZE);
     this.addChild(background);
     
@@ -48,8 +53,10 @@ function(Container,
     var point = event.data.getLocalPosition(this, event.data.global);
     var tile = this.getTileCoord(point);
     
-    if(this._map[tile.x][tile.y]) {
-      this._map[tile.x][tile.y].highlight();
+    if((tile.x > this.minTileX) && (tile.x < this.maxTileX) && (tile.y > this.minTileY) && (tile.y < this.maxTileY)) {
+      if(this._map[tile.x][tile.y]) {
+        this._map[tile.x][tile.y].highlight();
+      }
     }
   }
   

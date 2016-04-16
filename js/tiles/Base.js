@@ -1,8 +1,10 @@
 define([
   './Tile',
+  './Building',
   'jig/shapes/Quad'
 ],
 function(Tile,
+         Building,
          Quad) {
   var Base = function() {
     this._super();
@@ -10,7 +12,7 @@ function(Tile,
     this.addChild(new Quad(0xffff00, Tile.SIZE, Tile.SIZE));
   };
   
-  extend(Base, Tile);
+  extend(Base, Building);
   
   return Base;
 });

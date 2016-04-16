@@ -1,10 +1,10 @@
 define([
   'jig/Game',
-  './GameMain',
+  './Menu',
   './data'
 ],
 function(Game,
-         GameMain,
+         Menu,
          data) {
   return new Game()
     .config({
@@ -14,6 +14,6 @@ function(Game,
     })
     .data(data)
     .run(function() {
-      this.setState(new GameMain());
+      this.setState(new Menu());
     });
 });
