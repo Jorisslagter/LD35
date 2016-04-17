@@ -102,11 +102,8 @@ define([
     }
 
     Enemy.prototype.ruin = function() {
-        if(this.health == 0) {
-            return;
-        }
-
         this.health = 0;
+
         if(this.parent) {
             this.parent.addChild(new Explosion(this, 100, 1));
 
