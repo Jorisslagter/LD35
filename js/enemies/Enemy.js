@@ -2,16 +2,20 @@ define([
     "jig/Container",
     "jig/Vector",
     "../tiles/Tile",
-    "../components/Health"],
+    "../components/Health",
+    "../explosions/Explosion"
+
+    ],
     function (
         Container,
         Vector,
         Tile,
-        Health
+        Health,
+        Explosion
     ) {
     var Enemy = function (container, x, y) {
         Container.call(this);
-        
+
         this.addComponent(Health);
 
         this.x = x * Tile.SIZE;
@@ -104,8 +108,11 @@ define([
             return;
         }
 
+
         this.health = 0;
         if(this.parent) {
+            this.parent.addChild(new Explosion(this, 100, 1));
+
             this.parent.entities.splice(this.parent.entities.indexOf(this), 1);
             this.parent.removeChild(this);
         }
