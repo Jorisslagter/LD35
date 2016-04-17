@@ -2,17 +2,22 @@ define([
     "jig/Container",
     "jig/Vector",
     "../tiles/Tile",
-    "../components/Health"],
+    "../components/Health",
+    "../components/Hitable"],
     function (
         Container,
         Vector,
         Tile,
-        Health
+        Health,
+        Hitable
     ) {
     var Enemy = function (container, x, y) {
         Container.call(this);
         
-        this.addComponent(Health);
+        this.addComponents([Health, Hitable]);
+        
+        this.hitType = 'enemy';
+        this.hitRadius = 10;
 
         this.x = x * Tile.SIZE;
         this.y = y * Tile.SIZE;
@@ -107,6 +112,7 @@ define([
 
     Enemy.prototype.equipWeapon = function(weapon) {
         this.weapon = weapon;
+        this.weapon.hitTypes = ['ally'];
 
         this.addChild(weapon);
     }

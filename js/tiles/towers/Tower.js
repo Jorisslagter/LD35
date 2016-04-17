@@ -122,6 +122,7 @@ define([
 
     Tower.prototype.equipWeapon = function(weapon) {
       this.weapon = weapon;
+      this.weapon.hitTypes = ['enemy'];
 
       this.addChild(weapon);
     }
