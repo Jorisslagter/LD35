@@ -53,7 +53,9 @@ define([
     };
 
     Health.prototype.death = function() {
+      this.health = 0;
       this.emit('death');
+
     };
 
     Health.prototype.hit = function(hitPoints) {
