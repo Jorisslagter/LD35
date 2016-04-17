@@ -5,8 +5,12 @@ define([
     Projectile,
     Quad
 ) {
-    var Rocket = function (weapon, start, dest) {
-        this._super([weapon, start, dest, 250, 50, 25]);
+    var Rocket = function (weapon) {
+        this._super([weapon]);
+
+        this.speed = 250;
+        this.hitRadius = 25;
+        this.damage = 50;
 
         var bullet = new Quad(0xffffff, 8, 8);
         this.addChild(bullet);

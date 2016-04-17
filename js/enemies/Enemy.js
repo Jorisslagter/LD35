@@ -2,6 +2,7 @@ define([
     "jig/Container",
     "jig/Vector",
     "../tiles/Tile",
+    "../components/Hitable"],
     "../components/Health",
     "../explosions/Explosion"
 
@@ -10,13 +11,17 @@ define([
         Container,
         Vector,
         Tile,
+        Hitable,
         Health,
         Explosion
     ) {
     var Enemy = function (container, x, y) {
         Container.call(this);
-
-        this.addComponent(Health);
+        
+        this.addComponents([Health, Hitable]);
+        
+        this.hitType = 'enemy';
+        this.hitRadius = 10;
 
         this.x = x * Tile.SIZE;
         this.y = y * Tile.SIZE;
@@ -92,14 +97,8 @@ define([
 
     }
 
-    Enemy.prototype.hit = function(hp) {
-        this.health -= hp;
-
-        console.log(hp +" hit");
-
-        if(this.health <= 0) {
-            this.ruin();
-        }
+    Enemy.prototype.death = function() {
+      this.ruin();    
 
     }
 
@@ -107,7 +106,6 @@ define([
         if(this.health == 0) {
             return;
         }
-
 
         this.health = 0;
         if(this.parent) {
@@ -121,6 +119,7 @@ define([
 
     Enemy.prototype.equipWeapon = function(weapon) {
         this.weapon = weapon;
+        this.weapon.hitTypes = ['ally'];
 
         this.addChild(weapon);
     }

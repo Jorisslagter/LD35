@@ -16,9 +16,5 @@ function(Container) {
   
   extend(Tile, Container);
   
-  Tile.prototype.highlight = function() {
-    //
-  };
-  
   return Tile;
 });

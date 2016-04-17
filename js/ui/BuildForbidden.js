@@ -21,7 +21,7 @@ function(Container,
         },
         rotation: Math.PI/4
       }
-    })
+    });
   };
   
   extend(BuildForbidden, Container);

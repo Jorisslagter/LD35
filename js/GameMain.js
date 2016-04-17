@@ -25,7 +25,7 @@ function(PIXI,
     });
     
     this.map.base.on('death', (function() {
-      this.map.updating = false;
+      this.map.updating = this.map.interactive = false;
       this.map.filters = [new PIXI.filters.BlurFilter()];
       
       this.hud.animAlpha(1, 0, 1, null, function() {
