@@ -76,8 +76,8 @@ define([], function () {
                         if (sequence.done < sequence.amount) {
 
                             for (var j = 0; j < sequence.amount; j++) {
-                                var randomX = Math.random() > 0.5 ? Math.random() * -10 - 10 : Math.random() * 10 + 10;
-                                var randomY = Math.random() > 0.5 ? Math.random() * -10 - 10 : Math.random() * 10 + 10;
+                                var randomX = Math.random() > 0.5 ? Math.random() * -5 - 5 : Math.random() * 5 + 5;
+                                var randomY = Math.random() > 0.5 ? Math.random() * -5 - 5 : Math.random() * 5 + 5;
 
                                 var check = map.spawn(randomX, randomY, sequence.type);
                                 this.sequence[sequenceId].done += 1;

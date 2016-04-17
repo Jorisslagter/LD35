@@ -21,6 +21,13 @@ define([
         
         this.hitType = 'enemy';
         this.hitRadius = 10;
+        this.distance = 10000;
+
+        // Default circle property
+        this.circleAroundRadius = 200;
+        this.phase = 0;
+
+        this.fase = 'findTarget';
 
         this.x = x * Tile.SIZE;
         this.y = y * Tile.SIZE;
@@ -37,13 +44,16 @@ define([
     }
     extend(Enemy, Container);
 
-    Enemy.prototype.moveTo = function(tile) {
+    Enemy.prototype.moveTo = function(tile, delta) {
         var position = new Vector(this.x, this.y);
 
         var direction = position.getDirectionTo(tile);
 
         this.vx = direction.x;
         this.vy = direction.y;
+
+        this.x += this.vx * this.speed * delta;
+        this.y += this.vy * this.speed * delta;
 
     }
 
@@ -66,13 +76,24 @@ define([
 
     }
 
+    Enemy.prototype.circleAround = function(delta) {
+
+        this.aimTo(this.dest);
+        if(this.canShoot()){
+          this.shoot();
+        };
+
+        this.phase += delta;
+
+        this.x = Math.sin(this.phase) * this.circleAroundRadius;
+        this.y = Math.cos(this.phase) * this.circleAroundRadius;
+    }
+
     Enemy.prototype.setGoal = function(dest) {
         this.dest = dest;
     }
 
-
-    Enemy.prototype.update = function (delta) {
-
+    Enemy.prototype.crash = function (delta) {
         var position = new Vector(this.x, this.y);
 
         if(position.getDistanceTo(this.dest) <= (this.width / 2  + this.dest.width / 2)) {
@@ -81,17 +102,105 @@ define([
         }
 
         if(this.dest) {
-            this.moveTo(this.dest);
+            this.moveTo(this.dest, delta);
             this.lookAt(this.dest);
             this.aimTo(this.dest);
-
-            this.x += this.vx * this.speed * delta;
-            this.y += this.vy * this.speed  * delta;
 
         }
 
         if(this.canShoot()) {
             this.shoot();
+        }
+
+    }
+
+    Enemy.prototype.moveToTarget = function(delta) {
+        var position = new Vector(this.x, this.y);
+
+        if(position.getDistanceTo(this.dest) <= 200) {
+            return true;
+        }
+
+        this.moveTo(this.dest, delta);
+        this.lookAt(this.dest);
+
+    }
+
+    Enemy.prototype.locateTarget = function() {
+        for (var i in this.container.buildings) {
+            var entity = this.container.buildings[i];
+
+            var length = new Vector(this.x - entity.x, this.y - entity.y).length();
+
+            if (length < this.distance) {
+                this.setGoal(entity);
+                this.aimTo(entity);
+
+                var clearTarget = (function() {
+                    this.dest = null;
+                }).bind(this);
+
+                this.dest.on('death', clearTarget);
+                this.dest.on('removed', clearTarget);
+                return;
+            }
+        }
+    };
+
+    Enemy.prototype.setType = function(type) {
+        this.type = type;
+
+    }
+
+    Enemy.prototype.update = function (delta) {
+
+        switch (this.fase) {
+            case 'crash':
+                this.crash(delta);
+                break;
+
+            case 'circleAround':
+                this.circleAround(delta);
+                break;
+
+            case 'shootFromDistance':
+                this.lookAt(this.dest);
+                this.aimTo(this.dest);
+
+                if(this.canShoot()) {
+                    this.shoot();
+                }
+
+                break;
+
+            case 'findTarget':
+            default:
+                if(!this.dest) {
+                    this.locateTarget();
+                    this.fase = 'moveToTarget';
+
+                }
+
+                break;
+
+            case 'moveToTarget':
+                if(this.moveToTarget(delta)) {
+
+                    switch(this.type) {
+                        case 'terrorist' :
+                            this.fase = 'crash';
+                            break;
+                        case 'stalker' :
+                            this.fase = 'circleAround';
+                            break;
+                        case 'range' :
+                            this.fase = 'shootFromDistance';
+                            break;
+                    }
+                }
+
+                break;
+
         }
 
     }

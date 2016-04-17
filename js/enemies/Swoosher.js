@@ -23,6 +23,9 @@ define([
         this.rangeOfFire = 250;
         this.speed = 75;
 
+        this.setType('stalker');
+        this.circleAroundRadius = 200;
+
         this.equipWeapon(new Shotgun(this.container));
         this.weapon.position = new Vector(5, 0);
 

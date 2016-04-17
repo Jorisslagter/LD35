@@ -6,7 +6,7 @@ define(["./Weapon", "../projectiles/Bullet", "jig/shapes/Quad"], function (Weapo
         this.setProjectile(Bullet);
         this.setCooldown(1);
         this.setRateOfFire(5);
-        this.setRandomSpread(15);
+        this.setRandomSpread(4);
 
         var gun = new Quad(0x0000FF, 40, 3);
         this.addChild(gun);

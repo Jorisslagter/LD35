@@ -18,6 +18,8 @@ define([
           }
         });
 
+        this.type = 'range';
+
         this.rangeOfFire = 300;
         this.speed = 100;
         this.hitRadius = 25/2;

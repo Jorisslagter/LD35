@@ -31,6 +31,7 @@ define([
             this.maxTileY = height / 2;
 
             this.entities = [];
+            this.buildings = [];
 
             var background = new Container();
 
@@ -131,6 +132,8 @@ define([
         };
 
         Map.prototype.putTile = function (tile, cellX, cellY, replace) {
+
+
             if ((this._map[cellX][cellY] !== null) && (replace)) {
                 this.removeTile(cellX, cellY);
             }
@@ -140,6 +143,8 @@ define([
             tile.cell.x = cellX;
             tile.cell.y = cellY;
             this.addChild(tile);
+
+            this.buildings.push(tile);
 
             if(tile.onBuild) {
                 tile.onBuild(this);
@@ -151,6 +156,8 @@ define([
             var tile = this._map[cellX][cellY];
 
             if (tile) {
+                this.buildings.splice(this.buildings.indexOf(tile), 1);
+
                 this._map[cellX][cellY] = null;
                 this.removeChild(tile);
                 tile.map = null;
@@ -172,7 +179,7 @@ define([
             var entity = new type(this, x, y);
 
             var target = this.getTileAt(0, 0);
-            entity.setGoal(target);
+            // entity.setGoal(target);
 
             this.entities.push(entity);
             this.addChild(entity);

@@ -17,7 +17,9 @@ define([
             is: new Quad(0x22FF22, 35, 35)
           }
         });
-        
+
+        this.type = 'terrorist';
+
         this.hitRadius = 35/2;
 
         this.rangeOfFire = 500;
