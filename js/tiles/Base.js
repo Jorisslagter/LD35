@@ -16,5 +16,9 @@ function(Tile,
   
   extend(Base, Building);
   
+  Base.prototype.ruin = function() {
+    
+  };
+  
   return Base;
 });

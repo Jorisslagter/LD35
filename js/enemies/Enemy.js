@@ -1,20 +1,23 @@
 define([
     "jig/Container",
     "jig/Vector",
-    "../tiles/Tile"],
+    "../tiles/Tile",
+    "../components/Health"],
     function (
         Container,
         Vector,
-        Tile
+        Tile,
+        Health
     ) {
     var Enemy = function (container, x, y) {
         Container.call(this);
+        
+        this.addComponent(Health);
 
         this.x = x * Tile.SIZE;
         this.y = y * Tile.SIZE;
 
         this.speed = 20;
-        this.health = 100;
 
         this.vx = 0;
         this.vy = 0;
@@ -37,11 +40,12 @@ define([
     }
 
     Enemy.prototype.lookAt = function(tile) {
+      if(this.body) {
         var position = new Vector(this.x, this.y);
 
         var rotation = position.getAngleTo(tile);
-        this.rotation = rotation;
-
+        this.body.rotation = rotation;
+      }
     }
 
     Enemy.prototype.setGoal = function(dest) {

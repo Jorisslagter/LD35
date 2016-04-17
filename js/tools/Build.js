@@ -16,9 +16,9 @@ function(Tool, CircleTower, SquareTower, TriangleTower) {
     this._Tile = Tile;
 
     this.preview = new Tile();
+    this.preview.showHealthBar = false;
     this.preview.distanceField.visible = true;
     this.preview.alpha = 0.5;
-
   };
   
   extend(Build, Tool);
@@ -27,7 +27,7 @@ function(Tool, CircleTower, SquareTower, TriangleTower) {
     if(map.getTileAt(point.x, point.y) == null) {
       var tile = new this._Tile();
       map.putTile(tile, point.x, point.y);
-      
+      map.currentTool = null;
     }
   };
   
