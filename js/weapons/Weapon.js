@@ -7,6 +7,7 @@ define(["jig/Container", "jig/Vector"], function (Container, Vector) {
         this.projectile = null;
         this.cooldownTimer = this.cooldown = 1;
         this.ROF = 1;
+        this.spreadRate = 1;
         this.readyToShoot = false;
         this.projectileContainer = projectileContainer;
 
@@ -19,6 +20,11 @@ define(["jig/Container", "jig/Vector"], function (Container, Vector) {
         });
     }
     extend(Weapon, Container);
+
+    Weapon.prototype.setRandomSpread = function(delta) {
+        this.spreadRate = delta;
+
+    }
 
     Weapon.prototype.setProjectile = function(type) {
         this.projectile = type;
@@ -36,7 +42,21 @@ define(["jig/Container", "jig/Vector"], function (Container, Vector) {
         this.readyToShoot = false;
         this.cooldownTimer = this.cooldown;
 
-        this.createProjectile(dest);
+        if(this.ROF >= 1) {
+
+            for(var i = 0; i < this.ROF; i ++ ) {
+                var dest = new Vector(dest.x, dest.y);
+
+                if(this.spreadRate > 1) {
+                    dest.x = dest.x * Math.random() * this.spreadRate + 1;
+                    dest.y = dest.y * Math.random() * this.spreadRate + 1;
+                }
+
+                this.createProjectile(dest);
+
+            }
+
+        }
     }
 
     Weapon.prototype.createProjectile = function(dest) {

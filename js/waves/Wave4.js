@@ -2,18 +2,21 @@ define([
     "jig/Container",
     "./Wave",
     "../Enemies/Walker",
-    "../Enemies/Dumper"
+    "../Enemies/Dumper",
+    "../Enemies/Swoosher"
 ], function (
     Container,
     Wave,
     Walker,
-    Dumper
+    Dumper,
+    Swoosher
 ) {
     var Wave3 = function() {
         Wave.call(this);
 
-        this.add(Walker, 30);
-        this.add(Dumper, 15);
+        this.add(Walker, 4);
+        this.add(Dumper, 4);
+        this.add(Swoosher, 3);
 
     }
     

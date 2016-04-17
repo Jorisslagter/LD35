@@ -3,6 +3,7 @@ define([], function () {
         this.done = false;
         this.sequence = [];
         this.entities = [];
+        this.current = 0;
 
     };
 
@@ -11,7 +12,8 @@ define([], function () {
         var data = {
             type: type,
             amount: amount,
-            done: 0
+            done: 0,
+            time: 0
         };
 
         this.sequence.push(data);
@@ -28,10 +30,9 @@ define([], function () {
 
         for(var entityId in this.entities) {
             var entity = this.entities[entityId];
-
-             if(entity.health > 0) {
-                 return false;
-             }
+            if (entity.health > 0) {
+                return false;
+            }
 
         }
 
@@ -59,28 +60,40 @@ define([], function () {
 
     };
 
-    Wave.prototype.spawn = function (map, delta) {
-
+    Wave.prototype.update = function (map, delta, delayBetweenWaves) {
         if (!this.isDoneSpawning()) {
 
             for (var sequenceId in this.sequence) {
+                sequenceId = parseInt(sequenceId);
                 var sequence = this.sequence[sequenceId];
 
-                if (sequence.done < sequence.amount) {
+                if(sequenceId == this.current) {
 
+                    if (sequence.time < delayBetweenWaves) {
+                        this.sequence[sequenceId].time += delta;
+                    }
+                    else {
+                        if (sequence.done < sequence.amount) {
 
-                    for (var j = 0; j < sequence.amount; j++) {
-                        var randomX = Math.random() * 10 + -10;
-                        var randomY = Math.random() * 10 + -10;
+                            for (var j = 0; j < sequence.amount; j++) {
+                                var randomX = Math.random() > 0.5 ? Math.random() * -10 - 10 : Math.random() * 10 + 10;
+                                var randomY = Math.random() > 0.5 ? Math.random() * -10 - 10 : Math.random() * 10 + 10;
 
-                        var check = map.spawn(randomX, randomY, sequence.type);
-                        this.sequence[sequenceId].done += 1;
+                                var check = map.spawn(randomX, randomY, sequence.type);
+                                this.sequence[sequenceId].done += 1;
 
-                        this.entities.push(check);
+                                this.entities.push(check);
+
+                            }
+
+                            this.current ++;
+
+                        }
 
                     }
 
                 }
+
 
             }
 

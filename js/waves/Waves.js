@@ -3,6 +3,8 @@ define(["jig/Container"], function (Container) {
         Container.call(this);
 
         this.map = map;
+        this.waveTimer = this.delayBetweenWaves = options.delayBetweenWaves || 3;
+        this.delayBetweenSequences = options.delayBetweenSequences || 5;
         this.waves = [];
         this.setup(options.sequence);
 
@@ -29,19 +31,26 @@ define(["jig/Container"], function (Container) {
 
         if(this.waves.length > 0) {
             if (!this.currentWave) {
-                var next = this.getNextWave();
-                this.execute(next);
+
+                if(this.waveTimer > 0) {
+                    this.waveTimer -= delta;
+                } else {
+                    this.waveTimer = this.delayBetweenWaves;
+                    var next = this.getNextWave();
+                    this.execute(next);
+                }
 
             } else {
 
                 if (!this.currentWave.isDoneSpawning()) {
-                    this.currentWave.spawn(this.map, delta);
-                }
+                    this.currentWave.update(this.map, delta, this.delayBetweenWaves);
 
-                if (this.currentWave.isAllDead()) {
-                    this.currentWave = null;
-                    this.waves.splice(0, 1);
-
+                } else {
+                    if (this.currentWave.isAllDead()) {
+                        this.currentWave = null;
+                        this.waves.splice(0, 1);
+                    }
+                    
                 }
 
             }
