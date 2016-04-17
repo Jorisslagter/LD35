@@ -88,7 +88,7 @@ define([
 
     Tower.prototype.update = function(delta) {
       if (this.map) {
-        if (this.target) {
+        if (this.target && this.target.health > 0) {
           this.aimTo(this.target);
 
           var v = new Vector(this.x - this.target.x, this.y - this.target.y);
@@ -143,8 +143,8 @@ define([
     }
 
     Tower.prototype.shoot = function() {
-      var target = new Vector(this.target.x, this.target.y);
-      this.weapon.shoot(target);
+      // var target = new Vector(this.target.x, this.target.y);
+      this.weapon.shoot(this.target);
 
 
     }

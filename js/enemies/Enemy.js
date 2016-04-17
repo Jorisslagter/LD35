@@ -48,6 +48,16 @@ define([
       }
     }
 
+    Enemy.prototype.aimTo = function(target) {
+        if(this.weapon) {
+            var position = new Vector(this.x, this.y);
+
+            var rotation = position.getAngleTo(target);
+            this.weapon.rotation = rotation;
+        }
+
+    }
+
     Enemy.prototype.setGoal = function(dest) {
         this.dest = dest;
     }
@@ -65,6 +75,7 @@ define([
         if(this.dest) {
             this.moveTo(this.dest);
             this.lookAt(this.dest);
+            this.aimTo(this.dest);
 
             this.x += this.vx * this.speed * delta;
             this.y += this.vy * this.speed  * delta;
@@ -89,9 +100,15 @@ define([
     }
 
     Enemy.prototype.ruin = function() {
-        this.health = 0;
+        if(this.health == 0) {
+            return;
+        }
 
-        this.parent.removeChild(this);
+        this.health = 0;
+        if(this.parent) {
+            this.parent.entities.splice(this.parent.entities.indexOf(this), 1);
+            this.parent.removeChild(this);
+        }
 
     }
 

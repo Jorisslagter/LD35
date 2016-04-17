@@ -12,7 +12,7 @@ define([
     Tower) {
     var TriangleTower = function() {
       Tower.call(this);
-
+ 
       this.name = "Triangle Tower";
 
       var size = (Tile.SIZE / 2) * 0.8;
