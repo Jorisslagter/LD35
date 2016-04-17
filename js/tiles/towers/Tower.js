@@ -6,6 +6,7 @@ define([
     'jig/components/Schedule',
     '../Tile',
     '../Building',
+    '../../components/Hitable',
     '../../weapons/Pistol'
   ],
   function(Container,
@@ -15,9 +16,15 @@ define([
     Schedule,
     Tile,
     Building,
+    Hitable,
     Pistol) {
     var Tower = function() {
       Building.call(this);
+
+      this.addComponents([Hitable]);
+
+      this.hitType = 'ally';
+      this.hitRadius = Tile.SIZE / 2;
 
       this.build({
         bgLayer: {

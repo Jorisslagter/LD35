@@ -7,7 +7,8 @@ function(Tile,
   var Building = function() {
     Tile.call(this);
     this.addComponent(Health);
-    
+
+
     this.health = this.maxHealth = 100;
   };
   

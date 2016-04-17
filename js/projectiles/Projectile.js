@@ -47,7 +47,7 @@ define(["jig/Container", "jig/Vector"], function (Container, Vector) {
         var itterations = 10;
         for(var itterate = 0; itterate <= itterations; itterate ++) {
             var step = this.speed / itterations;
-            this.distanceTrafeled += (this.direction.x * step + this.direction.y * step) * delta;
+            this.distanceTrafeled += Math.abs((this.direction.x * step + this.direction.y * step) * delta);
 
             this.x += this.direction.x * step * delta;
             this.y += this.direction.y * step * delta;
@@ -77,6 +77,8 @@ define(["jig/Container", "jig/Vector"], function (Container, Vector) {
         // Play sound
         this.weapon.destroyProjectile(this);
         this.onHit.call(this, this.dest);
+
+        this.destroy();
 
     }
 

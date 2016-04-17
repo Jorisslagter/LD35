@@ -127,24 +127,32 @@ define([
     }
 
     Enemy.prototype.locateTarget = function() {
+        var closest = this.distance;
+        var target = null;
+
         for (var i in this.container.buildings) {
             var entity = this.container.buildings[i];
 
             var length = new Vector(this.x - entity.x, this.y - entity.y).length();
 
-            if (length < this.distance) {
-                this.setGoal(entity);
-                this.aimTo(entity);
-
-                var clearTarget = (function() {
-                    this.dest = null;
-                }).bind(this);
-
-                this.dest.on('death', clearTarget);
-                this.dest.on('removed', clearTarget);
-                return;
+            if (length < closest) {
+                target = entity;
             }
         }
+
+        if(target != null) {
+            this.setGoal(target);
+            this.aimTo(target);
+
+            var clearTarget = (function() {
+                this.dest = null;
+            }).bind(this);
+
+            this.dest.on('death', clearTarget);
+            this.dest.on('removed', clearTarget);
+
+        }
+
     };
 
     Enemy.prototype.setType = function(type) {
