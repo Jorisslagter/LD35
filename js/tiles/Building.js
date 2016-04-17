@@ -17,7 +17,7 @@ function(Tile,
     this.parent.removeChild(this);
   };
   
-  Building.prototype.highlight = function() {
+  Building.prototype.mouseover = function() {
     if(this._healthBar) {
       this._healthBar.alpha = 1;
     }

@@ -32,8 +32,7 @@ define([
 
             this.entities = [];
 
-            var background = new Quad(0x222222, width * Tile.SIZE, height * Tile.SIZE);
-            this.addChild(background);
+            var background = new Container();
 
             this._map = {};
 
@@ -42,8 +41,14 @@ define([
 
                 for (var j = -height / 2; j < height / 2; j++) {
                     this._map[i][j] = null;
+                    
+                    var bgTile = new Quad(0x222222, (Tile.SIZE-2), (Tile.SIZE-2));
+                    bgTile.position.set(i*Tile.SIZE, j*Tile.SIZE);
+                    background.addChild(bgTile)
                 }
             }
+            
+            this.addChild(background);
             
             this.base = new Base();
             this.putTile(this.base, 0, 0);
@@ -112,10 +117,6 @@ define([
                     }
                 } else {
                     this.removeChild(this._buildForbidden);
-
-                    if (this._map[tile.x][tile.y]) {
-                        this._map[tile.x][tile.y].highlight();
-                    }
                 }
             }
         }

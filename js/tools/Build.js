@@ -16,6 +16,7 @@ function(Tool, CircleTower, SquareTower, TriangleTower) {
     this._Tile = Tile;
 
     this.preview = new Tile();
+    this.preview.interactive = false;
     this.preview.showHealthBar = false;
     this.preview.distanceField.visible = true;
     this.preview.alpha = 0.5;

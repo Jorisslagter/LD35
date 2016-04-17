@@ -88,15 +88,8 @@ define([
 
     }
 
-    Enemy.prototype.hit = function(hp) {
-        this.health -= hp;
-
-        console.log(hp +" hit");
-
-        if(this.health <= 0) {
-            this.ruin();
-        }
-
+    Enemy.prototype.death = function() {
+      this.ruin();
     }
 
     Enemy.prototype.ruin = function() {

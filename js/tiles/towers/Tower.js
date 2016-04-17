@@ -68,13 +68,16 @@ define([
         if (length < this.distance) {
           this.target = entity;
           this.aimTo(entity);
+          
+          var clearTarget = (function() {
+            this.target = null;
+          }).bind(this);
+          
+          this.target.on('death', clearTarget);
+          this.target.on('removed', clearTarget);
           return;
         }
       }
-    };
-
-    Tower.prototype.attack = function() {
-
     };
 
     Tower.prototype.aimTo = function(target) {
@@ -158,6 +161,15 @@ define([
 
       }
     }
+    
+    Tower.prototype.mouseover = function() {
+      Building.prototype.mouseover.call(this);
+      this.distanceField.visible = true;
+    };
+    
+    Tower.prototype.mouseout = function() {
+      this.distanceField.visible = false;
+    };
 
     return Tower;
   });
