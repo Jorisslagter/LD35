@@ -5,7 +5,8 @@ define([
     'jig/Button',
     'jig/components/Animated',
     'jig/animation/Move',
-    'jig/animation/Alpha', "jig/animation/Rotate", "jig/animation/Scale"
+    'jig/animation/Alpha', "jig/animation/Rotate", "jig/animation/Scale",
+    "jig/Audio"
 ], function (
     Container,
     Quad,
@@ -13,7 +14,8 @@ define([
     Button,
     Animated,
     Move,
-    Alpha, Rotate, Scale) {
+    Alpha, Rotate, Scale,
+    Audio) {
     var Explosion = function (entitiy, size, duration) {
         Container.call(this);
 
@@ -48,6 +50,9 @@ define([
             });
         }
 
+        this.on('added', function() {
+          Audio.play('snd_explosion');
+        });
     };
 
     extend(Explosion, Container);

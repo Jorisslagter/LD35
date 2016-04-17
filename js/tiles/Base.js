@@ -2,12 +2,14 @@ define([
   './Tile',
   './Building',
   'jig/shapes/Quad',
-  '../components/Hitable'
+  '../components/Hitable',
+  'jig/Audio'
 ],
 function(Tile,
          Building,
          Quad,
-         Hitable) {
+         Hitable,
+         Audio) {
   var Base = function() {
     this._super([], [Hitable]);
     
@@ -20,6 +22,10 @@ function(Tile,
   };
   
   extend(Base, Building);
+  
+  Base.prototype.hit = function() {
+    Audio.play('snd_hit');
+  }
   
   Base.prototype.ruin = function() {
     

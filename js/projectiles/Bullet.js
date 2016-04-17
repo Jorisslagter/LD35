@@ -1,23 +1,31 @@
 define([
-    "./Projectile",
-    "jig/shapes/Quad"
-], function (
-    Projectile,
-    Quad
+  "./Projectile",
+  "jig/shapes/Quad",
+  "jig/Audio"
+], function(
+  Projectile,
+  Quad,
+  Audio
 ) {
-    var Bullet = function (weapon) {
-        this._super([weapon]);
-        
-        this.speed = 300;
-        this.hitRadius = 1;
-        this.damage = 5;
+  var Bullet = function(weapon) {
+    this._super([weapon]);
 
-        var bullet = new Quad(0xffffff, 2, 2);
-        this.addChild(bullet);
+    this.speed = 300;
+    this.hitRadius = 1;
+    this.damage = 5;
 
-    }
-    extend(Bullet, Projectile);;
+    var bullet = new Quad(0xffffff, 2, 2);
+    this.addChild(bullet);
+
+  }
+  extend(Bullet, Projectile);
+
+  Bullet.prototype.shoot = function(aim) {
+    Projectile.prototype.shoot.call(this, aim);
     
-    return Bullet;
+    Audio.play('snd_bullet');
+  }
+
+  return Bullet;
 
 });

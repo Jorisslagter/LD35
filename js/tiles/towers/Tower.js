@@ -25,7 +25,7 @@ define([
         }
       });
 
-      this.distance = 150;
+      this.distance = 200;
       this.target = null;
       this.name = "Basic Tower";
       this.price = 100;

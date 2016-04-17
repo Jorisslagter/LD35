@@ -1,9 +1,11 @@
 define([
     "./Projectile",
-    "jig/shapes/Quad"
+    "jig/shapes/Quad",
+    "jig/Audio"
 ], function (
     Projectile,
-    Quad
+    Quad,
+    Audio
 ) {
     var Rocket = function (weapon) {
         this._super([weapon]);
@@ -17,6 +19,11 @@ define([
 
     }
     extend(Rocket, Projectile);
+    
+    Rocket.prototype.shoot = function(aim) {
+      Projectile.prototype.shoot.call(this, aim);
+      Audio.play("snd_bullet2");
+    };
 
 
     return Rocket;
