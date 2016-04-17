@@ -2,10 +2,9 @@ define([
     "jig/Container",
     "jig/Vector",
     "../tiles/Tile",
-    "../components/Hitable"],
+    "../components/Hitable",
     "../components/Health",
     "../explosions/Explosion"
-
     ],
     function (
         Container,
