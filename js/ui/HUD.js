@@ -1,6 +1,7 @@
 define([
   'jig/Container',
   'jig/shapes/Quad',
+  'jig/components/Animated',
   './TowerButton',
   './ShiftButton',
   '../tiles/towers/CircleTower',
@@ -10,6 +11,7 @@ define([
 ],
 function(Container,
          Quad,
+         Animated,
          TowerButton,
          ShiftButton,
          CircleTower,
@@ -18,7 +20,7 @@ function(Container,
          Build) {
   
   var HUD = function() {
-    this._super();
+    this._super([], [Animated]);
     
     var towers = [CircleTower, SquareTower, TriangleTower];
     

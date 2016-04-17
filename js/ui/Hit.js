@@ -1,29 +1,29 @@
 define([
     'jig/Container',
-    'jig/Text'
+    'jig/Text',
+    'jig/components/Animated',
+    'jig/animation/MoveTo',
+    'jig/animation/Alpha'
   ],
-  function(Container, Text) {
+  function(Container,
+           Text,
+           Animated,
+           MoveTo,
+           Alpha) {
     var Hit = function(value) {
       Container.call(this);
       
-      this.build({
-        text: new Text("-" + value, {font: 'bold 40px monospace', fill: 0xff0000})
-      });
+      this.addComponent(Animated);
       
-      this._time = 2;
-      this._c_time = 0;
+      var text = new Text("-" + value, {font: 'bold 30px monospace', fill: 0xff0000});
+      this.addChild(text);
+      
+      this.on('added', function() {
+        this.addAnimation([new Alpha(1, 0, 1), new MoveTo(this.x, this.y - 200, 1)]);
+      });
     };
     
     extend(Hit, Container);
-
-    Hit.prototype.update = function(delta) {
-      var t = this._c_time / this._time;
-      
-      //this.alpha = 1 - (t*t*t);
-      //this.y -= 50 * delta;
-      
-      this._c_time += delta;
-    };
 
     return Hit;
   });

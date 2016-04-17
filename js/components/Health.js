@@ -52,7 +52,9 @@ define([
       }
     };
 
-    Health.prototype.death = function() {};
+    Health.prototype.death = function() {
+      this.emit('death');
+    };
 
     Health.prototype.hit = function(hitPoints) {
       if (this.health > 0) {

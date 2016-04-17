@@ -44,8 +44,9 @@ define([
                     this._map[i][j] = null;
                 }
             }
-
-            this.putTile(new Base(), 0, 0);
+            
+            this.base = new Base();
+            this.putTile(this.base, 0, 0);
 
             this.addChild(new Waves({
                 sequence: [

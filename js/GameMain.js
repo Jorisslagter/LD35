@@ -1,13 +1,17 @@
 define([
+  'pixi',
   'jig/Container',
   './ui/HUD',
   './Map',
-  './tiles/towers/Tower'
+  './tiles/towers/Tower',
+  './ui/GameOver'
 ],
-function(Container,
+function(PIXI,
+         Container,
          HUD,
          Map,
-         Tower) {
+         Tower,
+         GameOver) {
   var GameMain = function() {
     this._super();
     
@@ -19,6 +23,17 @@ function(Container,
         is: new HUD()
       }
     });
+    
+    this.map.base.on('death', (function() {
+      this.map.updating = false;
+      this.map.filters = [new PIXI.filters.BlurFilter()];
+      
+      this.hud.animAlpha(1, 0, 1, null, function() {
+        this.parent.removeChild(this);
+      });
+      
+      this.addChild(new GameOver());
+    }).bind(this));
     
     this.hud.on('tool', (function(tool) {
       this.map.currentTool = tool;
