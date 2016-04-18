@@ -15,7 +15,9 @@ function(Tile,
   extend(Building, Tile);
   
   Building.prototype.death = function() {
-    this.parent.removeChild(this);
+    if(this.parent) {
+      this.parent.removeTile(this.cell.x, this.cell.y);
+    }
   };
   
   Building.prototype.mouseover = function() {

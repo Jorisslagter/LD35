@@ -85,8 +85,8 @@ define([
 
         this.phase += delta;
 
-        this.x = Math.sin(this.phase) * this.circleAroundRadius;
-        this.y = Math.cos(this.phase) * this.circleAroundRadius;
+        this.x = this.dest.x + Math.sin(this.phase) * this.circleAroundRadius;
+        this.y = this.dest.y + Math.cos(this.phase) * this.circleAroundRadius;
     }
 
     Enemy.prototype.setGoal = function(dest) {
@@ -127,6 +127,12 @@ define([
     }
 
     Enemy.prototype.locateTarget = function() {
+
+        if(this.dest) {
+           return;
+
+        }
+
         var closest = this.distance;
         var target = null;
 
@@ -151,6 +157,8 @@ define([
             this.dest.on('death', clearTarget);
             this.dest.on('removed', clearTarget);
 
+            this.fase = 'moveToTarget';
+
         }
 
     };
@@ -161,6 +169,8 @@ define([
     }
 
     Enemy.prototype.update = function (delta) {
+        this.locateTarget();
+
 
         switch (this.fase) {
             case 'crash':
@@ -180,17 +190,7 @@ define([
                 }
 
                 break;
-
-            case 'findTarget':
-            default:
-                if(!this.dest) {
-                    this.locateTarget();
-                    this.fase = 'moveToTarget';
-
-                }
-
-                break;
-
+            
             case 'moveToTarget':
                 if(this.moveToTarget(delta)) {
 
