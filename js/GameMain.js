@@ -15,6 +15,8 @@ function(PIXI,
   var GameMain = function() {
     this._super();
     
+    this.money = 500;
+    
     this.build({
       map: {
         is: new Map(10, 10)
@@ -49,6 +51,18 @@ function(PIXI,
   };
   
   extend(GameMain, Container);
+  
+  Object.defineProperties(GameMain.prototype, {
+    money: {
+      get: function() {
+        return this._money || 0;
+      },
+      set: function(value) {
+        this._money = value;
+        this.emit('money', this._money);
+      }
+    }
+  });
   
   GameMain.prototype.keyDown = function(code) {
     if(code == 27) {

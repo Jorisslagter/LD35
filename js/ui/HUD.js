@@ -1,6 +1,7 @@
 define([
   'jig/Container',
   'jig/shapes/Quad',
+  'jig/Text',
   'jig/components/Animated',
   './TowerButton',
   './ShiftButton',
@@ -11,6 +12,7 @@ define([
 ],
 function(Container,
          Quad,
+         Text,
          Animated,
          TowerButton,
          ShiftButton,
@@ -56,9 +58,22 @@ function(Container,
     
     this.buttons.x = -800;
     this.buttons.y = -this.buttons.height / 2;
+    
+    this.money = new Text("$0", {font: 'bold 60px monospace', fill: 0x00aa00});
+    this.money.x = -800;
+    this.money.y = -480;
+    
+    this.addChild(this.money);
+    
+    this.on('added', function() {
+      this.money.text = '$' + this.parent.money;
+      this.parent.on('money', (function(value) {
+        this.money.text = '$' + value;
+      }).bind(this));
+    });
   };
   
   extend(HUD, Container);
   
   return HUD;
-})
+});

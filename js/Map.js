@@ -110,7 +110,7 @@ define([
                 if (this.currentTool && this.currentTool.preview) {
                     this.currentTool.preview.position.set(tile.x * Tile.SIZE, tile.y * Tile.SIZE);
 
-                    if (!(this.currentTool.preview.visible = (this._map[tile.x][tile.y] == null))) {
+                    if ((!(this.currentTool.preview.visible = (this._map[tile.x][tile.y] == null))) || (this.parent.money < this.currentTool.preview.price)) {
                         this._buildForbidden.position.set(tile.x * Tile.SIZE, tile.y * Tile.SIZE);
                         this.addChild(this._buildForbidden);
                     } else {

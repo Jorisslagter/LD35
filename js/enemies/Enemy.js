@@ -4,7 +4,8 @@ define([
     "../tiles/Tile",
     "../components/Hitable",
     "../components/Health",
-    "../explosions/Explosion"
+    "../explosions/Explosion",
+    "../ui/FloatText"
     ],
     function (
         Container,
@@ -12,7 +13,8 @@ define([
         Tile,
         Hitable,
         Health,
-        Explosion
+        Explosion,
+        FloatText
     ) {
     var Enemy = function (container, x, y) {
         Container.call(this);
@@ -41,6 +43,8 @@ define([
         // this.rangeOfFire = 100;
 
         this.weapon = null;
+        
+        this.killPrice = 25;
     }
     extend(Enemy, Container);
 
@@ -214,8 +218,12 @@ define([
     }
 
     Enemy.prototype.death = function() {
-      this.ruin();    
-
+      this.parent.parent.money += this.killPrice;
+      var money = new FloatText("+$" + this.killPrice, {font: "bold 60px monospace", fill: 0x00aa00});
+      money.position.set(this.x, this.y);
+      this.parent.addChild(money);
+      
+      this.ruin();
     }
 
     Enemy.prototype.ruin = function() {

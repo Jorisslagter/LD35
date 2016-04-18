@@ -66,7 +66,7 @@ define([
           this._healthBar.alpha = 1;
         }
         
-        var hit = new Hit(hitPoints);
+        var hit = new Hit("-" + hitPoints);
         hit.x = this.x + (-30 + Math.random() * 60);
         hit.y = this.y + (-30 + Math.random() * 60);
         

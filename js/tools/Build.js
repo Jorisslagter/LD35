@@ -2,9 +2,14 @@ define([
   './Tool',
   '../tiles/towers/CircleTower',
   '../tiles/towers/SquareTower',
-  '../tiles/towers/TriangleTower'
+  '../tiles/towers/TriangleTower',
+  '../ui/FloatText'
 ],
-function(Tool, CircleTower, SquareTower, TriangleTower) {
+function(Tool,
+         CircleTower,
+         SquareTower,
+         TriangleTower,
+         FloatText) {
   
   CircleTower.prototype.next = SquareTower;
   SquareTower.prototype.next = TriangleTower;
@@ -27,8 +32,17 @@ function(Tool, CircleTower, SquareTower, TriangleTower) {
   Build.prototype.use = function(map, point) {
     if(map.getTileAt(point.x, point.y) == null) {
       var tile = new this._Tile();
-      map.putTile(tile, point.x, point.y);
-      map.currentTool = null;
+      
+      if(map.parent.money >= tile.price) {
+        map.putTile(tile, point.x, point.y);
+        map.currentTool = null;
+        
+        var money = new FloatText("-$" + tile.price, {font: "bold 60px monospace", fill: 0x00aa00});
+        money.position.set(tile.x, tile.y);
+        map.addChild(money);
+        
+        map.parent.money -= tile.price;
+      }
     }
   };
   
