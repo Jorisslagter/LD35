@@ -190,7 +190,7 @@ define([
                 }
 
                 break;
-            
+
             case 'moveToTarget':
                 if(this.moveToTarget(delta)) {
 
